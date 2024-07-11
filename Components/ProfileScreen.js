@@ -1,115 +1,107 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { MaterialIcons } from '@expo/vector-icons';
 
-export default function ProfileScreen() {
+export default function Profile() {
   const navigation = useNavigation();
 
   const handleLogout = () => {
     Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
+      "Logout",
+      "Apakah yakin anda ingin keluar?",
       [
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
         },
-        {
-          text: 'Logout',
-          onPress: () => {
-            navigation.navigate('Login');
-          },
-        },
-      ],
-      { cancelable: false }
+        { text: "Yes", onPress: () => navigation.navigate('Login') }
+      ]
     );
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Account Information</Text>
-          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-            <Text style={styles.logoutText}>Logout</Text>
-            <MaterialIcons name="logout" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.profilePictureContainer}>
-          <Image
-            source={{ uri: 'https://i.pinimg.com/originals/3f/94/70/3f9470b34a8e3f526dbdb022f9f19cf7.jpg' }} // Replace with your image URL
-            style={styles.profilePicture}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text>Name :</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text>Email :</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text>Password:</Text>
-          <TextInput style={styles.input} secureTextEntry />
-        </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.profile}>
+        <Image source={{uri: 'https://i.pinimg.com/originals/3f/94/70/3f9470b34a8e3f526dbdb022f9f19cf7.jpg'}} style={styles.avatar} />
+        <Text style={styles.name}>Mohammad Iqbal Fahmi</Text>
+        <Text style={styles.title}>Mahasiswa</Text>
       </View>
+      <View style={styles.info}>
+        <InfoItem icon="mail" text="222310046@student.ibik.ac.id" />
+        <InfoItem icon="call" text="08381234221" />
+        <InfoItem icon="logo-facebook" text="Aki giting 231"/>
+      </View>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutText}>Logout</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
+function InfoItem({ icon, text }) {
+  return (
+    <View style={styles.infoItem}>
+      <Ionicons name={icon} size={24} color="black" />
+      <Text style={styles.infoText}>{text}</Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#f5f5f5',
   },
-  header: {
+  profile: {
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#4e8bed',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  name: {
+    marginTop: 10,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  title: {
+    fontSize: 16,
+    color: 'white',
+  },
+  info: {
+    margin: 20,
+  },
+  infoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#5078E1',
-    paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
   },
-  headerText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+  infoText: {
+    marginLeft: 10,
+    fontSize: 16,
   },
   logoutButton: {
-    flexDirection: 'row',
+    backgroundColor: '#4e8bed',
+    padding: 15,
+    borderRadius: 80,
     alignItems: 'center',
-    padding: 5,
+    margin: 100,
   },
   logoutText: {
     color: 'white',
-    marginRight: 5,
-  },
-  profilePictureContainer: {
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  profilePicture: {
-    width: 350,
-    height: 200,
-    borderRadius: 60, // Half of width/height to make it round
-  },
-  inputContainer: {
-    margin: 10,
-    paddingHorizontal: 15,
-  },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginTop: 5,
-    paddingHorizontal: 10,
-    backgroundColor: '#f0f0f0',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
