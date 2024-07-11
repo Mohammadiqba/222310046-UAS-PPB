@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 const SheetScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [fontSize, setFontSize] = useState(14);
+  const [isUnderlined, setIsUnderlined] = useState(false);
+  const [fontStyle, setFontStyle] = useState('normal');
+  const [textAlign, setTextAlign] = useState('left');
 
   const saveSheet = () => {
     if (title && content) {
-      const currentDate = new Date().toLocaleDateString(); // Mendapatkan tanggal saat ini
+      const currentDate = new Date().toLocaleDateString(); 
       navigation.navigate('HomeTabs', {
         screen: 'Home',
         params: {
@@ -16,20 +21,43 @@ const SheetScreen = ({ navigation }) => {
         }
       });
     } else {
-      Alert.alert('Error', 'Please fill in both title and content');
+      Alert.alert('Error', 'Tolong isi JUDUL DAN ISI SHEET TERSEBUT !');
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.toolbar}>
+        <TouchableOpacity onPress={() => setFontSize(prev => prev + 1)}>
+          <FontAwesome5 name="font" size={24} color="black" style={{ transform: [{ scale: 1.2 }] }} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setFontSize(prev => prev - 1)}>
+          <FontAwesome5 name="font" size={24} color="black" style={{ transform: [{ scale: 0.8 }] }} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsUnderlined(!isUnderlined)}>
+          <FontAwesome name="underline" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setFontStyle(fontStyle === 'normal' ? 'italic' : 'normal')}>
+          <FontAwesome name="italic" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setTextAlign('left')}>
+          <FontAwesome5 name="align-left" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setTextAlign('center')}>
+          <FontAwesome5 name="align-center" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setTextAlign('right')}>
+          <FontAwesome5 name="align-right" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
       <TextInput
-        style={styles.input}
+        style={[styles.input, styles.titleInput]}
         placeholder="Sheet Title"
         value={title}
         onChangeText={setTitle}
       />
       <TextInput
-        style={[styles.input, styles.textArea]}
+        style={[styles.input, styles.textArea, { fontSize, textDecorationLine: isUnderlined ? 'underline' : 'none', fontStyle, textAlign }]}
         placeholder="Sheet Content"
         value={content}
         onChangeText={setContent}
@@ -51,6 +79,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: 'white',
+  },
+  toolbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 10,
+  },
+  toolbarText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   input: {
     borderWidth: 1,
@@ -59,9 +97,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 10,
   },
+  titleInput: {
+    backgroundColor: '#f0f0f0',  
+  },
   textArea: {
-    height: 100,
+    height: 600,
     textAlignVertical: 'top',
+    backgroundColor: '#f0f0f0',  
   },
   buttonContainer: {
     flexDirection: 'row',

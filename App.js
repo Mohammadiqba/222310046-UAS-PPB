@@ -11,6 +11,7 @@ import SignUpScreen from './Components/SignUpScreen';
 import SheetScreen from './Components/SheetScreen';
 import SheetDetailScreen from './Components/SheetDetailScreen';
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -27,10 +28,10 @@ function HomeTabs() {
             iconName = focused ? 'person' : 'person-outline';
           }
 
-          return <Ionicons name={iconName} size={size} color={focused ? 'blue' : 'white'} />;
+          return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'blue',
-        tabBarInactiveTintColor: 'blue',
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'darkgray',
         tabBarStyle: styles.tabBar,
         tabBarItemStyle: ({ focused }) => [
           styles.tabBarItem,
@@ -61,7 +62,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: 'white',
+    backgroundColor: 'lightgray',
     borderTopWidth: 0,
     position: 'absolute',
     left: 0,
@@ -74,13 +75,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tabBarItemSelected: {
-    backgroundColor: 'blue',
+    backgroundColor: 'darkgray',
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: 'white',
+    borderColor: 'lightgray',
   },
   tabBarItemUnselected: {
-    backgroundColor: 'white',
+    backgroundColor: 'lightgray',
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderColor: 'gray',

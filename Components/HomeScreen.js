@@ -15,17 +15,17 @@ const HomeScreen = ({ navigation, route }) => {
     }
   }, [route.params?.newSheet]);
 
-  const deleteSheet = (id) => {
-    setSheets(sheets.filter(sheet => sheet.id !== id));
-    setSelectedSheets(selectedSheets.filter(sheetId => sheetId !== id));
-  };
-
-  const deleteAllSheets = () => {
-    setSheets([]);
-    setSelectedSheets([]);
+  const deleteSheet = () => {
+    const newSheets = sheets.filter(sheet => !selectedSheets.includes(sheet.id));
+    setSheets(newSheets);
+    setSelectedSheets([]); // Clear selection after deletion
   };
 
   const confirmDelete = () => {
+    if (selectedSheets.length === 0) {
+      Alert.alert('No Selection', 'Please select at least one sheet to delete.');
+      return;
+    }
     Alert.alert(
       'Delete Sheets',
       'Are you sure you want to delete the selected sheets?',
@@ -36,10 +36,7 @@ const HomeScreen = ({ navigation, route }) => {
         },
         {
           text: 'Delete',
-          onPress: () => {
-            selectedSheets.forEach(id => deleteSheet(id));
-            setSelectedSheets([]);
-          },
+          onPress: deleteSheet,
           style: 'destructive'
         }
       ],
@@ -144,12 +141,6 @@ const styles = StyleSheet.create({
   sheetDate: {
     fontSize: 14,
     color: '#666',
-  },
-  actionButtons: {
-    flexDirection: 'row',
-  },
-  deleteButton: {
-    marginHorizontal: 5,
   },
 });
 
