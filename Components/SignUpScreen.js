@@ -1,92 +1,66 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function SignUpScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  const handleSignUp = () => {
-    navigation.replace('HomeTabs');
-  };
-
+const SignUpScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.title}>Sign Up</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          secureTextEntry
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-        />
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+        <TextInput style={styles.input} placeholder="Email" />
+        <TextInput style={styles.input} placeholder="Password" secureTextEntry />
+        <TextInput style={styles.input} placeholder="Password Confirm" secureTextEntry />
+        <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
-        <Text style={styles.orText}>or</Text>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.buttonText}>Login</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.switchText}>or Login</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#5078E1',
     justifyContent: 'center',
-    backgroundColor: '#4a90e2',
-    padding: 16,
+    alignItems: 'center',
   },
   formContainer: {
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: '#fff',
     padding: 20,
-    marginHorizontal: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
-    marginBottom: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    marginBottom: 20,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    width: '100%',
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: '#f0f0f0',
     borderRadius: 5,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-    backgroundColor: '#e0e0e0',
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#008000',
     padding: 10,
     borderRadius: 5,
-    marginVertical: 5, 
+    width: '100%',
+    alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    color: '#fff',
+    fontSize: 16,
   },
-  orText: {
-    textAlign: 'center',
-    marginVertical: 5, 
+  switchText: {
+    marginTop: 10,
+    color: '#008000',
   },
 });
+
+export default SignUpScreen;
