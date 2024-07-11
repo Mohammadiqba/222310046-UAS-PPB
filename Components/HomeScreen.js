@@ -3,21 +3,53 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Alert } from 'react
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Checkbox } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUser } from './UserContext';  // Import the useUser hook
 
 const HomeScreen = ({ navigation, route }) => {
   const [sheets, setSheets] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [selectedSheets, setSelectedSheets] = useState([]);
+  const { user } = useUser();  // Destructure user from the context
+
+  useEffect(() => {
+    if (user) {
+      loadSheets();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (route.params?.newSheet) {
-      setSheets([...sheets, { ...route.params.newSheet, id: sheets.length + 1 }]);
+      const newSheet = { ...route.params.newSheet, id: sheets.length + 1 };
+      const updatedSheets = [...sheets, newSheet];
+      setSheets(updatedSheets);
+      saveSheets(updatedSheets);
     }
   }, [route.params?.newSheet]);
+
+  const loadSheets = async () => {
+    try {
+      const savedSheets = await AsyncStorage.getItem(`sheets_${user.id}`);
+      if (savedSheets) {
+        setSheets(JSON.parse(savedSheets));
+      }
+    } catch (error) {
+      console.error('Failed to load sheets:', error);
+    }
+  };
+
+  const saveSheets = async (sheetsToSave) => {
+    try {
+      await AsyncStorage.setItem(`sheets_${user.id}`, JSON.stringify(sheetsToSave));
+    } catch (error) {
+      console.error('Failed to save sheets:', error);
+    }
+  };
 
   const deleteSheet = () => {
     const newSheets = sheets.filter(sheet => !selectedSheets.includes(sheet.id));
     setSheets(newSheets);
+    saveSheets(newSheets);
     setSelectedSheets([]); // Clear selection after deletion
   };
 

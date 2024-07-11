@@ -2,9 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from './UserContext';  // Import the useUser hook
 
-export default function Profile() {
+export default function ProfileScreen() {
   const navigation = useNavigation();
+  const { user } = useUser();  // Destructure user from the context
 
   const handleLogout = () => {
     Alert.alert(
@@ -21,17 +23,25 @@ export default function Profile() {
     );
   };
 
+  if (!user) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.noUserText}>No user logged in</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profile}>
-        <Image source={{uri: 'https://i.pinimg.com/originals/3f/94/70/3f9470b34a8e3f526dbdb022f9f19cf7.jpg'}} style={styles.avatar} />
-        <Text style={styles.name}>Mohammad Iqbal Fahmi</Text>
-        <Text style={styles.title}>Mahasiswa</Text>
+        <Image source={{ uri: user.profile.avatar }} style={styles.avatar} />
+        <Text style={styles.name}>{user.profile.name}</Text>
+        <Text style={styles.title}>{user.profile.title}</Text>
       </View>
       <View style={styles.info}>
-        <InfoItem icon="mail" text="222310046@student.ibik.ac.id" />
-        <InfoItem icon="call" text="08381234221" />
-        <InfoItem icon="logo-facebook" text="Aki giting 231"/>
+        <InfoItem icon="mail" text={user.email} />
+        <InfoItem icon="call" text={user.profile.phone} />
+        <InfoItem icon="logo-facebook" text={user.profile.facebook} />
       </View>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Logout</Text>
@@ -56,7 +66,7 @@ const styles = StyleSheet.create({
   },
   profile: {
     alignItems: 'center',
-    padding: 20,
+    padding: 30,
     backgroundColor: '#4e8bed',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
@@ -103,5 +113,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  noUserText: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

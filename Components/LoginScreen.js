@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useUser } from './UserContext';
+import { UserList } from './ConsData';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setUser } = useUser();
 
   const handleLogin = () => {
-    if (email === '123@gmail.com' && password === '123') {
-      Alert.alert('Selamat Datang di Easy Sheet', 'Login berhasil!');
-      navigation.navigate('HomeTabs'); 
+    const user = UserList.find(u => u.email === email && u.password === password);
+    if (user) {
+      Alert.alert('Welcome', 'Login successful!');
+      setUser(user);
+      navigation.navigate('HomeTabs');
     } else {
-      Alert.alert('Error', 'Mohon maaf, email atau password Anda salah!');
+      Alert.alert('Error', 'Invalid email or password!');
     }
   };
 
@@ -19,21 +24,8 @@ const LoginScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.title}>Login</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+        <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
+        <TextInput style={styles.input} placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>

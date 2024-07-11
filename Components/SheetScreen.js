@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',  
   },
   textArea: {
-    height: 600,
+    height: 500,
     textAlignVertical: 'top',
     backgroundColor: '#f0f0f0',  
   },
